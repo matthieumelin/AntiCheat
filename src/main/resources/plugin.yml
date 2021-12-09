@@ -1,0 +1,5 @@
+name: AntiCheat
+main: fr.geeklegend.ac.AC
+version: 1.0
+author: GeekLegend
+depends: [ProtocolLib]
