@@ -1,61 +1,35 @@
 package fr.geeklegend.ac.checks;
 
-import fr.geeklegend.ac.AC;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
+import fr.geeklegend.ac.data.User;
+import fr.geeklegend.ac.utilities.Distance;
+import org.bukkit.entity.Entity;
 
-import java.util.Map;
-import java.util.WeakHashMap;
-
-public abstract class Check implements Listener {
+public abstract class Check {
     protected String name;
-
-    protected CheckType checkType;
-
-    protected boolean enabled;
-
-    protected boolean punishable;
 
     protected int max;
 
-    protected Map<Player, Integer> violations;
-
-    public Check(String name, CheckType checkType, boolean enabled, boolean punishable, int max) {
+    public Check(String name, int max) {
         this.name = name;
-        this.checkType = checkType;
-        this.enabled = enabled;
-        this.punishable = punishable;
         this.max = max;
-        this.violations = new WeakHashMap<>();
-
-        Bukkit.getPluginManager().registerEvents(this, AC.getInstance());
     }
 
-    protected void flag(Player player, String... information) {
-        int violations = this.violations.getOrDefault(player, 0) + 1;
-        if (information != null) {
-            StringBuilder formattedInfo = new StringBuilder();
-            for (String string : information) {
-                formattedInfo.append(string).append(", ");
-            }
-            Bukkit.getOnlinePlayers().forEach(staff -> {
-                if (staff.hasPermission("anticheat.staff")) {
-                    staff.sendMessage(ChatColor.GOLD + "[AntiCheat] " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " has been detected for " + ChatColor.YELLOW + name + ChatColor.GOLD + " [" + formattedInfo + "] " + ChatColor.RED + "(" + violations + ")");
-                }
-            });
-        } else {
-            Bukkit.getOnlinePlayers().forEach(staff -> {
-                if (staff.hasPermission("anticheat.staff")) {
-                    staff.sendMessage(ChatColor.GOLD + "[AntiCheat] " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " has been detected for " + ChatColor.YELLOW + name + ChatColor.RED + "(" + violations + ")");
-                }
-            });
-        }
-        if (violations >= max) {
-            player.kickPlayer("You have been detected for " + name);
-        }
-        this.violations.put(player, violations);
+    public abstract CheckResult check(Distance distance, User user);
+    public abstract CheckResult check(User user, Entity entity);
+
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
 }
