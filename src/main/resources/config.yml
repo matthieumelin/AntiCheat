@@ -1,0 +1,3 @@
+anticheat:
+  alert-message: "&8[&cAnti-Cheat&8] &c%player% &7flagged &c%check% &7(&c%vl%/%maxVl%&7)"
+  punish-command: "kick %player% &cKicked for Unfair Advantage"

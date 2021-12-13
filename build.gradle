@@ -12,6 +12,7 @@ sourceCompatibility = targetCompatibility = 1.8
 
 repositories {
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://jitpack.io' }
 
     mavenCentral()
     mavenLocal()
@@ -23,7 +24,7 @@ configurations {
 
 dependencies {
     implementation 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
-    implementation group: 'com.github.azbh111', name: 'ProtocolLib', version: '4.4.0'
+    implementation 'com.github.retrooper:packetevents:1.8-pre-18'
 
     configurations.implementation.extendsFrom(configurations.exportedLibs)
 }
